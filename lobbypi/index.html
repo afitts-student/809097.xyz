@@ -25,34 +25,40 @@
       background-image: url('/images/background.png');
       background-size: cover;
       background-position: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center; /* Vertically center all content */
       font-family: 'Montserrat', sans-serif;
       color: white;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 40px 20px; /* give some breathing room top & bottom */
+      height: 100vh;
+      box-sizing: border-box;
+    }
+
     h1 {
       font-weight: 600;
-      font-size: 70px; /* smaller for longer text */
-      margin: 0 0 20px 0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      font-size: 70px;
+      margin: 0;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
       user-select: none;
       text-align: center;
-      padding: 0 10px; /* some horizontal padding for smaller screens */
+      padding: 0 10px;
     }
 
     #clock {
       font-family: 'Anton', sans-serif;
       font-size: 300px;
       color: #800020;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
       line-height: 1;
       user-select: none;
-      margin: 0 0 40px 0;
+      margin: 0;
       text-align: center;
-      white-space: nowrap; /* prevent line breaks */
+      white-space: nowrap;
     }
 
     #schedule {
@@ -61,7 +67,8 @@
       text-align: center;
       user-select: none;
       margin: 0;
-      white-space: nowrap; /* keep on one line */
+      white-space: nowrap;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -76,15 +83,12 @@
   </div>
 
   <script>
-    // Get Eastern Time
     function getEasternTime() {
       return new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
     }
 
-    // Days of the week
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    // School period schedule (24h time in HH:MM)
     const periods = [
       { start: "08:30", end: "09:10", name: "Period 1" },
       { start: "09:10", end: "09:15", name: "Five Minute Break" },
@@ -105,18 +109,15 @@
       { start: "14:30", end: "15:10", name: "Period 9" }
     ];
 
-    // Pad numbers with leading zeros
     function padZero(num) {
       return num < 10 ? "0" + num : num;
     }
 
-    // Convert HH:MM string to minutes since midnight
     function toMinutes(timeStr) {
       const [h, m] = timeStr.split(":").map(Number);
       return h * 60 + m;
     }
 
-    // Get current period based on current time
     function getCurrentPeriod(time) {
       const currentMinutes = time.getHours() * 60 + time.getMinutes();
 
@@ -128,21 +129,17 @@
       return null;
     }
 
-    // Update time and schedule display
     function updateDisplay() {
       const now = getEasternTime();
 
-      // Update clock
       let hours = now.getHours();
       const minutes = padZero(now.getMinutes());
       const seconds = padZero(now.getSeconds());
-      const ampm = hours >= 12 ? "PM" : "AM";
 
       hours = hours % 12 || 12;
 
       document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
 
-      // Update day and period
       const dayName = daysOfWeek[now.getDay()];
       const currentPeriod = getCurrentPeriod(now);
 
@@ -150,10 +147,7 @@
       document.getElementById("day-period").textContent = dayPeriodText;
     }
 
-    // Initial call
     updateDisplay();
-
-    // Update every second
     setInterval(updateDisplay, 1000);
   </script>
 </body>
